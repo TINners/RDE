@@ -75,3 +75,8 @@ target/
 *.pyc
 __pycache__/
 local_settings.py
+
+
+### User-specific ###
+db.sqlite3
+
