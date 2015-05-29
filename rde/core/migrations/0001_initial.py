@@ -82,7 +82,7 @@ class Migration(migrations.Migration):
                 ('author_active', models.BooleanField()),
                 ('author_status', models.CharField(max_length=30)),
                 ('author_affiliation_id', models.CharField(max_length=60)),
-                ('supervisor', models.OneToOneField(primary_key=True, serialize=False, to='polls.Supervisor')),
+                ('supervisor', models.OneToOneField(primary_key=True, serialize=False, to='core.Supervisor')),
                 ('certifyingUnit', models.CharField(max_length=60)),
                 ('affiliationUnit', models.CharField(max_length=60)),
                 ('language', models.CharField(max_length=10)),
@@ -99,7 +99,7 @@ class Migration(migrations.Migration):
                 ('author_active', models.BooleanField()),
                 ('author_status', models.CharField(max_length=30)),
                 ('author_affiliation_id', models.CharField(max_length=60)),
-                ('supervisor', models.OneToOneField(primary_key=True, serialize=False, to='polls.Supervisor')),
+                ('supervisor', models.OneToOneField(primary_key=True, serialize=False, to='core.Supervisor')),
                 ('certifyingUnit', models.CharField(max_length=60)),
                 ('affiliationUnit', models.CharField(max_length=60)),
                 ('language', models.CharField(max_length=10)),
@@ -111,11 +111,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='master',
             name='supervisor',
-            field=models.ForeignKey(to='polls.Supervisor'),
+            field=models.ForeignKey(to='core.Supervisor'),
         ),
         migrations.AddField(
             model_name='bachelor',
             name='supervisor',
-            field=models.ForeignKey(to='polls.Supervisor'),
+            field=models.ForeignKey(to='core.Supervisor'),
         ),
     ]

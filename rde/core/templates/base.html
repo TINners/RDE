@@ -1,0 +1,16 @@
+{% comment %}
+    A base template, extended by all the specific templates.
+    Contains the core markup and shared static file references.
+{% endcomment %}
+
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %} RDE - RepoDyplomEdytor {% endblock %}</title>
+    </head>
+
+    <body>
+        {% block content %}{% endblock %}
+    </body>
+</html>
+
