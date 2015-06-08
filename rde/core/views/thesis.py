@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from ..forms import ThesisForm
 from ..models import Thesis as ThesisModel
+from ..helpers import login_required, active_login, active_template
 
 class Thesis(View):
     """
@@ -16,6 +17,7 @@ class Thesis(View):
     updates the thesis record or deletes it.
     """
 
+    @login_required
     def get(self, request, thesis_id = None):
         """
         On GET, render edition form for the given thesis.
@@ -25,6 +27,7 @@ class Thesis(View):
         form = ThesisForm(instance = self._existing_thesis(thesis_id))
         return render(request, "thesis-form.html", {"form": form})
 
+    @login_required
     def post(self, request, thesis_id = None):
         """
         On POST, validate the thesis data (provided as POST data)
@@ -40,6 +43,7 @@ class Thesis(View):
         else:
             return render(request, "thesis-form.html", {"form": form})
 
+    @login_required
     def delete(self, request, thesis_id):
         """
         On DELETE, delete the thesis record with the given thesis_id

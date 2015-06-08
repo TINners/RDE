@@ -6,6 +6,7 @@ from django.views.generic import View
 from django.shortcuts import render, redirect
 import xml.etree.ElementTree as ET
 
+from ..helpers import login_required
 
 class Auth(View):
     def get(self, request):
@@ -13,7 +14,8 @@ class Auth(View):
         On GET, render an empty login page.
         """
 
-        return render(request, "login.html")
+        message = request.GET.get("message")
+        return render(request, "login.html", {"message": message})
 
     def post(self, request):
         """
@@ -49,6 +51,7 @@ class Auth(View):
 
         return redirect("listing")
 
+    @login_required
     def delete(self, request):
         """
         On DELETE, remove user's authorization from their session

@@ -8,6 +8,8 @@
     <form action="/login/" method="POST">
         {% if error %}
             <p>Niepoprawny login lub hasło!</p>
+        {% elif message %}
+            <p>{{ message }}</p>
         {% endif %}
 
         {% csrf_token %}
