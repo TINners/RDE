@@ -1,0 +1,14 @@
+<users>
+    <user>
+        <l>jeden</l>
+        <p>pierwsze haslo</p>
+    </user>
+    <user>
+        <l>dwa</l>
+        <p>haselko</p>
+    </user>
+    <user>
+        <l>trzy</l>
+        <p />
+    </user>
+</users>
