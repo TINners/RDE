@@ -3,6 +3,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Thesis</h1>
+    <h1>Dodaj pracę:</h1>
+
+    <form action="/thesis/create/" method="POST">
+        {% csrf_token %}
+        {{ form }}
+
+        <input type="submit" value="Wyślij" />
+    </form>
 {% endblock %}
 

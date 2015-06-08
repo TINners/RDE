@@ -79,4 +79,4 @@ local_settings.py
 
 ### User-specific ###
 db.sqlite3
-
+rde/core/migrations/
