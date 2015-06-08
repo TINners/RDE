@@ -3,13 +3,24 @@
     Contains the core markup and shared static file references.
 {% endcomment %}
 
+{% load staticfiles %}
+
 <!doctype html>
 <html>
     <head>
         <title>{% block title %} RDE - RepoDyplomEdytor {% endblock %}</title>
+        <link href="{% static 'thesis-form.css' %}" rel="stylesheet" type="text/css" />
     </head>
 
     <body>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{message.level}}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         {% block content %}{% endblock %}
     </body>
 </html>

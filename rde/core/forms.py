@@ -2,7 +2,7 @@
 Form definitions and validation routines.
 """
 
-from django.forms import ModelForm, RegexField
+from django.forms import ModelForm, RegexField, RadioSelect
 
 from .models import Thesis
 
@@ -14,6 +14,9 @@ class ThesisForm(ModelForm):
     class Meta:
         model = Thesis
         exclude = ['issueYear', 'issueMonth', 'issueDay']
+        widgets = {
+            'kind': RadioSelect
+        }
 
     def __init__(self, *args, **kwargs):
         instance = kwargs.get("instance")

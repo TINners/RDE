@@ -6,6 +6,8 @@ and record deletion.
 from django.views.generic import View
 from django.forms.models import model_to_dict
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 from ..forms import ThesisForm
 from ..models import Thesis as ThesisModel
@@ -25,7 +27,13 @@ class Thesis(View):
         """
 
         form = ThesisForm(instance = self._existing_thesis(thesis_id))
-        return render(request, "thesis-form.html", {"form": form})
+        editing = thesis_id is not None
+
+        return render(request, "thesis-form.html", {
+            "form": form,
+            "submit_to": self._submit_url(thesis_id),
+            "editing": editing
+        })
 
     @login_required
     def post(self, request, thesis_id = None):
@@ -36,12 +44,26 @@ class Thesis(View):
         """
 
         form = ThesisForm(request.POST, instance = self._existing_thesis(thesis_id))
+        editing = thesis_id is not None
 
         if form.is_valid():
             form.save()
+
+            if not editing:
+                success_msg = "Dodano pracę {}!".format(
+                    "inżynierską" if form.kind == "B" else "magisterską")
+            else:
+                success_msg = "Zapisano zmiany!"
+
+            messages.add_message(request, messages.SUCCESS, success_msg)
+
             return redirect("listing")
         else:
-            return render(request, "thesis-form.html", {"form": form})
+            return render(request, "thesis-form.html", {
+                "form": form,
+                "submit_to": self._submit_url(thesis_id),
+                "editing": editing
+            })
 
     @login_required
     def delete(self, request, thesis_id):
@@ -50,6 +72,7 @@ class Thesis(View):
         or return 404.
         """
 
+        messages.add_message(request, messages.SUCCESS, "Usunięto pracę!")
         self._existing_thesis(thesis_id).delete()
 
     def _existing_thesis(self, thesis_id):
@@ -61,6 +84,16 @@ class Thesis(View):
 
         if thesis_id is not None:
             return get_object_or_404(ThesisModel, pk = thesis_id)
-        
+
         return None
+
+    def _submit_url(self, thesis_id):
+        """
+        Returns an URL the creation/edition form should be submitted to.
+        """
+
+        if thesis_id is None:
+            return reverse("thesis-create")
+        else:
+            return reverse("thesis-update-delete", kwargs = {"thesis_id": thesis_id})
 

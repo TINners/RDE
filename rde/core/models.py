@@ -124,7 +124,8 @@ class Thesis(models.Model):
         max_length = 1,
         choices = (
             ("B", "Praca inżynierska"),
-            ("M", "Praca magisterska")))
+            ("M", "Praca magisterska")),
+        default = "B")
 
     authorName = models.CharField(max_length = 30)
     authorSurname = models.CharField(max_length = 30)

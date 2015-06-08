@@ -3,13 +3,157 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Dodaj pracę:</h1>
+	<div align="center">
+		<h2>
+            {% if editing %}
+                Edytuj Pracę:
+            {% else %}
+                Dodaj Pracę:
+            {% endif %}
+		</h2>
 
-    <form action="/thesis/create/" method="POST">
-        {% csrf_token %}
-        {{ form }}
+        <form action="{{ submit_to }}" method="POST">
+            {% csrf_token %}
 
-        <input type="submit" value="Wyślij" />
-    </form>
+			<div class="default" align="left">
+				<p>Rodzaj:</p>
+
+                <div class="inputs {% if form.kind.errors %} errors {% endif %}">
+                    {{ form.kind }}
+                    <span class="error-messages">{{ form.kind.errors }}</span>
+				</div>
+			</div>
+
+			<div class="default" align="left">
+				<p>Autor:</p>
+
+				<div class="inputs {% if form.authorName.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Imię: </span>
+					</div>
+                    {{ form.authorName }}
+                    <span class="error-messages">{{ form.authorName.errors }}</span>
+                    <br>
+				</div>
+
+				<div class="inputs {% if form.authorSurname.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Nazwisko: </span>
+					</div>
+                    {{ form.authorSurname }}
+                    <span class="error-messages">{{ form.authorSurname.errors }}</span>
+                    <br>
+				</div>
+
+				<div class="inputs {% if form.authorEmail.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Adres e-mail: </span>
+					</div>
+                    {{ form.authorEmail }}
+                    <span class="error-messages">{{ form.authorEmail.errors }}</span>
+                    <br>
+				</div>
+
+			</div>
+
+			<div class="default"  align="left">
+				<p>Tytuł:</p>
+
+				<div class="inputs {% if form.titlePL.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Polski: </span>
+					</div>
+                    {{ form.titlePL }}
+                    <span class="error-messages">{{ form.titlePL.errors }}</span>
+                    <br>
+				</div>
+
+				<div class="inputs {% if form.titleEN.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Angielski: </span>
+					</div>
+                    {{ form.titleEN }}
+                    <span class="error-messages">{{ form.titleEN.errors }}</span>
+                    <br>
+				</div>
+			</div>
+
+			<div class="default" align="left">
+				<p>Abstrakt:</p>
+
+				<div class="inputs {% if form.abstractPL.errors %} errors {% endif %}">
+					<label for="textarea">
+						<div class="text">
+							<span>Polski: </span>
+						</div>
+                        {{ form.abstractPL }}
+					</label>
+                    <span class="error-messages">{{ form.abstractPL.errors }}</span>
+				</div>
+
+				<div class="inputs {% if form.abstractEN.errors %} errors {% endif %}">
+					<label for="textarea">
+						<div class="text">
+							<span>Angielski: </span>
+						</div>
+                        {{ form.abstractEN }}
+					</label>
+                    <span class="error-messages">{{ form.abstractEN.errors }}</span>
+				</div>
+			</div>
+
+			<div class="default" align="left">
+				<p>Słowa kluczowe:</p>
+
+				<div class="inputs {% if form.keywordsPL.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Polski: </span>
+					</div>
+                    {{ form.keywordsPL }}
+                    <span class="error-messages">{{ form.keywordsPL.errors }}</span>
+				</div>
+
+				<div class="inputs {% if form.keywordsEN.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Angielski: </span>
+					</div>
+                    {{ form.keywordsEN }}
+                    <span class="error-messages">{{ form.keywordsEN.errors }}</span>
+				</div>
+			</div>
+
+			<div class="default" align="left">
+				<p>Data wydania:</p>
+
+				<div class="inputs {% if form.issueDate.errors %} errors {% endif %}">
+                    {{ form.issueDate }}
+                    <span>(yyyy, yyyy-mm lub yyyy-mm-dd)</span> <br>
+                    <span class="error-messages">{{ form.issueDate.errors }}</span>
+				</div>
+			</div>
+
+			<div class="default" align="left">
+				<p>Opiekun:</p>
+
+				<div class="inputs {% if form.supervisorName.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Imię: </span>
+					</div>
+                    {{ form.supervisorName }}
+                    <span class="error-messages">{{ form.supervisorName.errors }}</span>
+				</div>
+
+				<div class="inputs {% if form.supervisorSurname.errors %} errors {% endif %}">
+					<div class="text">
+						<span>Nazwisko: </span>
+					</div>
+                    {{ form.supervisorSurname }}
+                    <span class="error-messages">{{ form.supervisorSurname.errors }}</span>
+				</div>
+			</div>
+
+			<input type="submit" value="Dodaj">
+		</form>
+	</div>
 {% endblock %}
 
