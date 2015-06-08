@@ -3,6 +3,68 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Listing</h1>
+    <div id="listing">
+        <div align="left">
+            <font size="6">
+                Twoje Prace:
+            </font>
+        </div>
+
+		<div align="right">
+            <button>Pobierz XML</button>
+            <button>Utwórz</button>
+            <button>Edytuj</button>
+            <button>Usuń</button>
+		</div>
+
+		</br>
+
+		<div align="center">
+			<table>
+				<tr id="header" bgcolor="#779CB0">
+					<th>
+						<input type="checkbox" name="Praca" value="all">
+					</th>
+					<th width="150">
+						<span>Rodzaj pracy</span>
+					</th>
+					<th width="350">
+						<span>Nazwisko i Imię</span>
+					</th>
+					<th width="350">
+						<span>Tytuł</span>
+					</th>
+					<th width="150">
+						<span>Data</span>
+					</th>
+				</tr>
+
+                {% for thesis in theses %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="Praca" value="{{ thesis.id }}">
+                        </td>
+                        <td width="150">
+                            {% if thesis.kind == "B" %}
+                                inżynierska
+                            {% else %}
+                                magisterska
+                            {% endif %}
+                        </td>
+                        <td width="350">
+                            {{ thesis.authorName }} {{ thesis.authorSurname }}
+                        </td>
+                        <td width="350">
+                            {{ thesis.titlePL }}
+                        </td>
+                        <td width="150">
+                            {{ thesis.issueDate }}
+                        </td>
+                    </tr>
+                {% endfor %}
+			</table>
+		</div>
+
+    </div>
 {% endblock %}
 
