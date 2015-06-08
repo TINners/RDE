@@ -2,8 +2,6 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 
-import xml.etree.ElementTree as ET
-
 from datetime import date
 
 class Supervisor(models.Model):
@@ -81,28 +79,28 @@ class Thesis(models.Model):
 
         return "templates/{kind}_template.xml".format(
             kind = "bachelor" if self.kind == "B" else "master")
-    
+
     def asXML(self):
         """
         Serialize this thesis record to XML using a proper template.
         """
 
-        tree = ET.parse(_XMLtemplate());
-        root = tree.getroot();
-        root[2][4].text = self.authorName;
-        root[2][5].text = self.authorSurname;
-        root[2][6].text = self.authorEmail;
-        root[3].text = self.titlePL;
-        root[4].text = self.titleEN;
-        root[5][0].text = self.supervisor.surname;
-        root[5][1].text = self.supervisor.name;
-        root[12].text = str(self.issueDate);
-        root[13].text = self.abstractPL;
-        root[14].text = self.abstractEN;
-        root[15].text = self.keywordsPL;
-        root[16].text = self.keywordsEN;
-    
-        return root.tostring(encoding = 'unicode')
+        with open(self._XMLtemplate()) as f:
+            template = f.read()
+
+        return template.format(
+            authorName = self.authorName,
+            authorSurname = self.authorSurname,
+            authorEmail = self.authorEmail,
+            titlePL = self.titlePL,
+            titleEN = self.titleEN,
+            supervisorName = self.supervisorName,
+            supervisorSurname = self.supervisorSurname,
+            issueDate = self.issueDate(),
+            abstractPL = self.abstractPL,
+            abstractEN = self.abstractEN,
+            keywordsPL = self.keywordsPL,
+            keywordsEN = self.keywordsEN)
 
     @classmethod
     def generateXML(cls, theses):

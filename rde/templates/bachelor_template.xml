@@ -7,18 +7,18 @@
         <affiliationowner>IN</affiliationowner>
         <active>false</active>
         <status>DYPLOMANT</status>
-        <name></name>
-        <surname></surname>
-        <email></email>
+        <name>{authorName}</name>
+        <surname>{authorSurname}</surname>
+        <email>{authorEmail}</email>
         <ns2:affiliation>
             <id>WEITI-a8a2fa13-0e5e-43f1-9c27-aeb4ee23e180</id>
         </ns2:affiliation>
     </author>
-    <titlePL></titlePL>
-    <titleEN></titleEN>
+    <titlePL>{titlePL}</titlePL>
+    <titleEN>{titleEN}</titleEN>
     <supervisor>
-        <name></name>
-        <surname></surname>
+        <name>{supervisorName}</name>
+        <surname>{supervisorSurname}</surname>
     </supervisor>
     <certifyingUnit>
         <id>WEITI-aca13175-86da-4e95-bb44-9e831ef22360</id>
@@ -32,9 +32,9 @@
     <status>finished</status>
     <mark>mark_placeholder</mark>
     <honored>honored_placeholder</honored>
-    <issueDate>2002</issueDate>
-    <abstractPL></abstractPL>
-    <abstractEN></abstractEN>
-    <keywordsPL></keywordsPL>
-    <keywordsEN></keywordsEN>
+    <issueDate>{issueDate}</issueDate>
+    <abstractPL>{abstractPL}</abstractPL>
+    <abstractEN>{abstractEN}</abstractEN>
+    <keywordsPL>{keywordsPL}</keywordsPL>
+    <keywordsEN>{keywordsEN}</keywordsEN>
 </ns2:bachelor>
