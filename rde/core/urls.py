@@ -6,15 +6,15 @@ from django.conf.urls import url
 
 from .views import (
     Auth,
+    Logout,
     Listing,
     Thesis,
-    Settings,
     Export
 )
 
 urlpatterns = [
     url(r'^login/$', Auth.as_view(), name = "login"),
-    url(r'^settings/$', Settings.as_view(), name = "settings"),
+    url(r'^logout/$', Logout.as_view(), name = "logout"),
 
     url(r'^export/$', Export.as_view(), name = "export"),
 

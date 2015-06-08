@@ -10,11 +10,19 @@
     <head>
         <title>{% block title %} RDE - RepoDyplomEdytor {% endblock %}</title>
 
+        <link href="{% static 'common.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'thesis-form.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'login.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'listing.css' %}" rel="stylesheet" type="text/css" />
     </head>
 
     <body>
+        <div align="right">
+            <span style="padding-right: 30px;">Zalogowano: {{ request.session.login }}</span>
+            |
+            <a href="/logout/">Wyloguj</a>
+        </div>
+
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -23,7 +31,9 @@
             </ul>
         {% endif %}
 
-        {% block content %}{% endblock %}
+        <div>
+            {% block content %}{% endblock %}
+        </div>
     </body>
 </html>
 

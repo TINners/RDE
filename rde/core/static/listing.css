@@ -1,0 +1,54 @@
+#listing div.default {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding-bottom: 7px;
+	border-style: solid;
+	border-color: grey;
+	border-width: 1px;
+	border-radius: 4px;
+	width: 500px;
+}
+
+#listing table {
+	border-width: 3px;
+	border-width: 1000px;
+	border-color: #779CB0;
+}
+
+#listing table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#listing th span {
+    color: white;
+    font-size: 17px;
+    text-decoration: bold;
+}
+
+#listing p {
+	color: white;
+	background-color: #779CB0;
+	font-size: 17px;
+	text-decoration: bold;
+	margin: 0;
+	margin-bottom: 8px;
+	padding: 2px;
+	padding-left: 8px;
+}
+
+#listing .inputs textarea {
+	resize: vertical;
+	vertical-align: top;
+}
+
+#listing div.text {
+	display: inline-block;
+	width: 80px;
+}
+
+#listing div.inputs {
+	display: inline-block;
+	padding-left: 30px;
+	margin-bottom: 3px;
+}

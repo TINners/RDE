@@ -3,7 +3,7 @@ Helper utilities used throughout RDE.
 """
 
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 from .models import Supervisor
 
@@ -15,7 +15,8 @@ def login_required(method):
 
     def wrapped(self, request, *args, **kwargs):
         if not active_login(request):
-            return redirect(reverse("login") + "?message=Musisz być zalogowany!")
+            messages.add_message(request, messages.WARNING, "Musisz być zalogowany!")
+            return redirect("login")
         else:
             return method(self, request, *args, **kwargs)
 
@@ -34,7 +35,7 @@ def active_template(request):
     """
 
     if active_login():
-        return Supervisor.objects.filter(pk = active_login()).get(0) or None
+        return Supervisor.objects.filter(pk = active_login()).get(0)
 
     return None
 

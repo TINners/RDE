@@ -1,29 +1,47 @@
 {# Login form. #}
 
-{% extends "base.html" %}
+{% load staticfiles %}
 
-{% block content %}
-	<div class="main" align="center" id="login-form">
-		<h2>Zaloguj się:</h2>
+<!doctype html>
+<html>
+    <head>
+        <title>RDE - RepoDyplomEdytor</title>
 
-        <form action="/login/" method="POST">
-            {% csrf_token %}
+        <link href="{% static 'common.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'login.css' %}" rel="stylesheet" type="text/css" />
+    </head>
 
-            {% if error %}
-                <p class="error">Niepoprawny login lub hasło!</p>
-            {% endif %}
+    <body>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{message.level}}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
-            E-mail:
-            <input type="text" name="login" size="17">
-            <input type="text" placeholder="@ii.pw.edu.pl" disabled size="13">
-            <br><br>
+        <div class="main" align="center" id="login-form">
+            <h2>Zaloguj się:</h2>
 
-            Hasło:
-            <input type="text" name="password" size="30">
-            <br><br>
+            <form action="/login/" method="POST">
+                {% csrf_token %}
 
-            <input type="submit" value="Zaloguj">
-        </form>
-	</div>
-{% endblock %}
+                {% if error %}
+                    <p class="error">Niepoprawny login lub hasło!</p>
+                {% endif %}
+
+                E-mail:
+                <input type="text" name="login" size="17">
+                <input type="text" placeholder="@ii.pw.edu.pl" disabled size="13">
+                <br><br>
+
+                Hasło:
+                <input type="text" name="password" size="30">
+                <br><br>
+
+                <input type="submit" value="Zaloguj">
+            </form>
+        </div>
+    <body>
+</html>
 

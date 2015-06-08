@@ -57,18 +57,6 @@ class Auth(View):
 
         return redirect("listing")
 
-    @login_required
-    def delete(self, request):
-        """
-        On DELETE, remove user's authorization from their session
-        and render the login page with a "logged out" message.
-        """
-
-        request.session["login"] = None
-
-        messages.add_message(request, messages.INFO, "Wylogowano!")
-        return redirect("login")
-
     def _render_with_error(self, request):
         """
         Render the login form with an error message.
@@ -119,4 +107,21 @@ class Auth(View):
         return ET.parse(self._users_xml_path)
 
     _users_xml_path = "config/users.xml"
+
+class Logout(View):
+    """
+    Logs the user out on GET.
+    """
+
+    @login_required
+    def get(self, request):
+        """
+        On GET, remove the user's authorization from their session
+        and render the login page with a "logged out" message.
+        """
+
+        del request.session["login"]
+
+        messages.add_message(request, messages.INFO, "Wylogowano!")
+        return redirect("login")
 

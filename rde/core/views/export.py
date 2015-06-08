@@ -3,6 +3,9 @@ Export view - supports export of selected thesis records to XML.
 """
 
 from django.views.generic import View
+from django.http import HttpResponse
+
+from ..models import Thesis
 
 class Export(View):
     def get(self, request):
@@ -22,5 +25,6 @@ class Export(View):
         # Thesis records.
         ids = filter(None, ids_string.split(","))
 
-        # TODO
+        theses = Thesis.objects.filter(id__in = ids)
+        return HttpResponse(Thesis.generateXML(theses))
 
