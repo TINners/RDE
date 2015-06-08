@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<link href="form.css" rel="stylesheet" type="text/css">
+	<title>Listing</title>
+
+	<style>
+
+
+
+	</style>
+
+</head>
+<body>
+	<div align="center">
+		<h2>
+			Dodaj Pracę:
+		</h2>
+		<form>
+			<div class="default" align="left">
+				<p>Rodzaj:</p>
+
+				<div class="inputs">
+					<label><input type="radio" name="kind" value="bachelor" checked>Inżynierska</label>
+					<br>
+					<label><input type="radio" name="kind" value="master">Magisterska</input></label>
+				</div>
+			</div>
+
+			<div class="default"  align="left">
+				<p>Autor:</p>
+
+				<div class="inputs">
+					<div class="text">
+						<span>Imię: </span>
+					</div>
+					<input type="text" name="surname" size="25"> <br>
+				</div>
+
+				<div class="inputs">
+					<div class="text">
+						<span>Nazwisko: </span>
+					</div>
+					<input type="text" name="name" size="25"> <br>
+				</div>
+
+			</div>
+
+			<div class="default"  align="left">
+				<p>Tytuł:</p>
+
+				<div class="inputs">
+					<div class="text">
+						<span>Polski: </span>
+					</div>
+					<input type="text" name="titlePL" size="45"> <br>
+				</div>
+
+				<div class="inputs">
+					<div class="text">
+						<span>Angielski: </span>
+					</div>
+					<input type="text" name="titleEN" size="45"> <br>
+				</div>
+			</div>
+
+
+
+			<div class="default" align="left">
+				<p>Abstrakt:</p>
+
+				<div class="inputs">
+					<label for="textarea">
+						<div class="text">
+							<span>Polski: </span>
+						</div>
+					<textarea type="text" name="titlePL" cols="46" rows="2"></textarea> <br>
+					</label>
+				</div>
+
+				<div class="inputs">
+					<label for="textarea">
+						<div class="text">
+							<span>Angielski: </span>
+						</div>
+						<textarea type="text" name="titleEN" cols="46" rows="2"></textarea> <br>
+					</label>
+				</div>
+
+			</div>
+
+			<div class="default" align="left">
+				<p>Słowa kluczowe:</p>
+
+				<div class="inputs">
+					<div class="text">
+						<span>Polski: </span>
+					</div>
+					<input type="text" name="titlePL" size="45"> <br>
+				</div>
+
+				<div class="inputs">
+					<div class="text">
+						<span>Angielski: </span>
+					</div>
+					<input type="text" name="titleEN" size="45"> <br>
+				</div>
+			</div>
+
+			<div class="default" align="left">
+				<p>Opiekun:</p>
+
+				<div class="inputs">
+					<div class="text">
+						<span>Imię: </span>
+					</div>
+					<input type="text" name="surname" size="25"> <br>
+				</div>
+
+				<div class="inputs">
+					<div class="text">
+						<span>Nazwisko: </span>
+					</div>
+					<input type="text" name="name" size="25"> <br>
+				</div>
+			</div>
+			<input type="submit" value="Wróć">
+			<input type="submit" value="Dodaj">
+		</form>
+	</div>
+</body>
+</html>

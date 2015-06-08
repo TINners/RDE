@@ -1,0 +1,22 @@
+div.main {
+	margin-top: 250px;
+
+}
+
+div.default {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding-bottom: 7px;
+	width: 400px;
+}
+
+div.text {
+	display: inline-block;
+	width: 80px;
+}
+
+div.inputs {
+	display: inline-block;
+	padding-left: 30px;
+	margin-bottom: 3px;
+}

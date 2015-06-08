@@ -1,0 +1,37 @@
+div.default {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding-bottom: 7px;
+	border-style: solid;
+	border-color: grey;
+	border-width: 1px;
+	border-radius: 4px;
+	width: 500px;
+}
+
+p {
+	color: white;
+	background-color: #779CB0;
+	font-size: 17px;
+	text-decoration: bold;
+	margin: 0;
+	margin-bottom: 8px;
+	padding: 2px;
+	padding-left: 8px;
+}
+
+.inputs textarea {
+	resize: vertical;
+	vertical-align: top;
+}
+
+div.text {
+	display: inline-block;
+	width: 80px;
+}
+
+div.inputs {
+	display: inline-block;
+	padding-left: 30px;
+	margin-bottom: 3px;
+}
