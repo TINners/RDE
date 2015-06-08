@@ -77,7 +77,7 @@ class Thesis(models.Model):
         Return a path to the proper XML template for this kind of thesis.
         """
 
-        return "templates/{kind}_template.xml".format(
+        return "config/{kind}_template.xml".format(
             kind = "bachelor" if self.kind == "B" else "master")
 
     def asXML(self):
@@ -155,5 +155,4 @@ class Thesis(models.Model):
 
     supervisorName = models.CharField(max_length = 30)
     supervisorSurname = models.CharField(max_length = 30)
-
 

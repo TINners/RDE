@@ -4,7 +4,13 @@ Authorization view - supports logging users in, out and changing their passwords
 
 from django.views.generic import View
 from django.shortcuts import render, redirect
-import xml.etree.ElementTree as ET
+from django.http import HttpResponseBadRequest
+from django.contrib import messages
+
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
 
 from ..helpers import login_required
 
@@ -14,8 +20,7 @@ class Auth(View):
         On GET, render an empty login page.
         """
 
-        message = request.GET.get("message")
-        return render(request, "login.html", {"message": message})
+        return render(request, "login.html")
 
     def post(self, request):
         """
@@ -23,31 +28,32 @@ class Auth(View):
         If they match, authorize the user's session and redirect
         them to the listing page.
         Otherwise render the login page with the errors highlighted.
-        """
-        # to improve
-        file_name = 'users.xml'
-        l = request.POST['login']
-        p = request.POST['password']
-        tree = ET.parse(file_name);
-        root = tree.getroot();
-        index = self._user_index_by_login(l, root)
 
-        if index == -1:
-            # blad autoryzacji, niepoprawny login
+        Attention: if there is no password set for the user and one
+        is provided in the form, user's password is updated!
+        """
+
+        login = request.POST.get("login")
+        password = request.POST.get("password")
+
+        if not login:
             return render(request, "login.html", {"error": True})
 
-        # Jest password w bazie
-        pwd_in_file = root[index].get(1)
-        if pwd_in_file and pwd_in_file.text:
-            if pwd_in_file.text != p:
-                # niepoprawne hasło
-                return render(request, "login.html", {"error": True})
+        (login_correct, correct_password) = self._user_credentials(login)
 
-        # Nie ma hasła w bazie, ale użytkownik je podał:
-        elif p:
-            self._update_password(index, p, tree, file_name)
+        if not login_correct:
+            # Invalid login.
+            return self._render_with_error(request)
+        elif correct_password and correct_password != password:
+            # There is a password in the configuration, but it doesn't match.
+            return self._render_with_error(request)
+        elif not correct_password and password:
+            # There is no password in the configuration, but the user has provided
+            # one, so set it and notify the user.
+            self._create_password(login, password)
+            messages.add_message(request, messages.INFO, "Hasło zostało ustawione!")
 
-        request.session['login'] = l
+        request.session["login"] = login
 
         return redirect("listing")
 
@@ -58,23 +64,59 @@ class Auth(View):
         and render the login page with a "logged out" message.
         """
 
-        # to improve. Need to write "logged out"
-        request.session['login'] = None
-        return render(request, "login.html")
+        request.session["login"] = None
 
-    def _user_index_by_login(self, l, root):
-        i = 0
-        for r in root:
-            if(r[0].text == l):
-                return i
-            i = i + 1
+        messages.add_message(request, messages.INFO, "Wylogowano!")
+        return redirect("login")
 
-        return -1
+    def _render_with_error(self, request):
+        """
+        Render the login form with an error message.
+        """
 
-    def _update_password(self, index, password, tree, fileName):
-        root = tree.getroot()
-        root[index][1].text = password
-        file = open(fileName, mode='w')
-        tree.write(file, encoding="unicode")
-        file.close()
+        return render(request, "login.html", {"error": True})
+
+    def _user_credentials(self, login):
+        """
+        Retrieve credentials for the given login.
+        Returns a tuple: (is the user registered?, user's password).
+
+        Attention: user's password will be None if unset.
+        """
+
+        tree = self._users_xml()
+        user_element = tree.find('user[l="{}"]'.format(login))
+
+        if user_element is None:
+            return (False, None)
+        else:
+            password = user_element.findtext("p")
+            return (True, password or None)
+
+    def _create_password(self, login, password):
+        """
+        Creates a password for the given user.
+        """
+
+        tree = self._users_xml()
+        user_element = tree.find('user[l="{}"]'.format(login))
+
+        existing_pwd_element = user_element.find("p")
+        if existing_pwd_element:
+            user_element.remove(existing_pwd_element)
+
+        pwd_element = ET.SubElement(user_element, "p")
+        pwd_element.text = password
+
+        with open(self._users_xml_path, 'w') as f:
+            tree.write(f, encoding="unicode")
+
+    def _users_xml(self):
+        """
+        Returns an XML tree of the users' configuration file.
+        """
+
+        return ET.parse(self._users_xml_path)
+
+    _users_xml_path = "config/users.xml"
 
