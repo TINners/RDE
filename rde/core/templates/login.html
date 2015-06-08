@@ -3,29 +3,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Login</h1>
+	<div class="main" align="center" id="login-form">
+		<h2>Zaloguj się:</h2>
 
-    <form action="/login/" method="POST">
-        {% if error %}
-            <p>Niepoprawny login lub hasło!</p>
-        {% elif message %}
-            <p>{{ message }}</p>
-        {% endif %}
+        <form action="/login/" method="POST">
+            {% csrf_token %}
 
-        {% csrf_token %}
-        <dl>
-            <dt>Login:</dt>
-            <dd>
-                <input type="text" name="login" />
-            </dd>
+            {% if error %}
+                <p class="error">Niepoprawny login lub hasło!</p>
+            {% endif %}
 
-            <dt>Hasło:</dt>
-            <dd>
-                <input type="password" name="password" />
-            </dd>
+            E-mail:
+            <input type="text" name="login" size="17">
+            <input type="text" placeholder="@ii.pw.edu.pl" disabled size="13">
+            <br><br>
 
-            <input type="submit" value="Zaloguj" />
-        </dl>
-    </form>
+            Hasło:
+            <input type="text" name="password" size="30">
+            <br><br>
+
+            <input type="submit" value="Zaloguj">
+        </form>
+	</div>
 {% endblock %}
 
