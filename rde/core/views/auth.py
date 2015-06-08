@@ -3,7 +3,7 @@ Authorization view - supports logging users in, out and changing their passwords
 """
 
 from django.views.generic import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import xml.etree.ElementTree as ET
 
 
@@ -23,54 +23,55 @@ class Auth(View):
         Otherwise render the login page with the errors highlighted.
         """
         # to improve
-        fileName = 'users.xml'
+        file_name = 'users.xml'
         l = request.POST['login']
         p = request.POST['password']
-        tree = ET.parse(fileName);
+        tree = ET.parse(file_name);
         root = tree.getroot();
-        index = getUserIndexByLogin(l, root)
-        
+        index = self._user_index_by_login(l, root)
+
         if index == -1:
-            # write niepoprawny login
-            return render(request, "login.html")          # blad autoryzacji, niepoprawny login
-            
-        if root[index][1].text != None:                       # Jest password w bazie
-            if(root[index][1].text != p):
-                # write niepoprawne haslo                 # password nie zgadza sie
-                return render(request, "login.html")      # blad autoryzacji
-                
-        elif p != None and p != '':                       # podal haslo
-            updatePassword(index, p, tree, fileName)      # update hasla
-       
+            # blad autoryzacji, niepoprawny login
+            return render(request, "login.html", {"error": True})
+
+        # Jest password w bazie
+        pwd_in_file = root[index].get(1)
+        if pwd_in_file and pwd_in_file.text:
+            if pwd_in_file.text != p:
+                # niepoprawne hasło
+                return render(request, "login.html", {"error": True})
+
+        # Nie ma hasła w bazie, ale użytkownik je podał:
+        elif p:
+            self._update_password(index, p, tree, file_name)
+
         request.session['login'] = l
-        return render(request, "listing.html")
-        
-            
+
+        return redirect("listing")
+
     def delete(self, request):
         """
         On DELETE, remove user's authorization from their session
         and render the login page with a "logged out" message.
         """
-        
+
         # to improve. Need to write "logged out"
         request.session['login'] = None
         return render(request, "login.html")
-        
-        
-    def getUserIndexByLogin(l, root):
+
+    def _user_index_by_login(self, l, root):
         i = 0
         for r in root:
             if(r[0].text == l):
                 return i
             i = i + 1
-        
+
         return -1
-        
-        
-    def updatePassword(index, password, tree, fileName):
+
+    def _update_password(self, index, password, tree, fileName):
         root = tree.getroot()
         root[index][1].text = password
         file = open(fileName, mode='w')
         tree.write(file, encoding="unicode")
         file.close()
-        return
+
