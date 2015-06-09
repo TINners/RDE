@@ -6,7 +6,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 
 from ..models import Thesis
-from ..helpers import parse_id_list
+from ..helpers import parse_id_list, active_login
 
 class Export(View):
     def post(self, request):
@@ -21,7 +21,10 @@ class Export(View):
 
         ids = parse_id_list(request.POST.get("ids", ""))
 
-        theses = Thesis.objects.filter(id__in = ids)
+        theses = Thesis.objects.filter(
+            id__in = ids,
+            supervisorLogin = active_login(request))
+
         return HttpResponse(Thesis.generateXML(theses),
             content_type = "text/plain")
 

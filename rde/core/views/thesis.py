@@ -150,13 +150,13 @@ class ThesisDelete(View):
 
         theses = ThesisModel.objects.filter(
             id__in = ids,
-            supervisorLogin = active_login(request))
+            supervisorLogin = active_login(request)
+        )
+
         for t in theses:
             t.delete()
 
-        success_msg = ("Usunięto pracę!"
-            if len(theses) == 1
-            else "Usunieto {} prac!".format(len(theses)))
+        success_msg = "Usunieto prac: {}!".format(len(theses))
 
         messages.add_message(request, messages.SUCCESS, success_msg)
         return redirect("listing")
