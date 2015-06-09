@@ -154,6 +154,7 @@ class Thesis(models.Model):
     keywordsEN = models.TextField(
         validators = [RegexValidator(_keywords_regex)])
 
+    supervisorLogin = models.EmailField()
     supervisorName = models.CharField(max_length = 30)
     supervisorSurname = models.CharField(max_length = 30)
 

@@ -48,7 +48,7 @@ class Thesis(View):
         editing = thesis_id is not None
 
         if form.is_valid():
-            form.save()
+            form.save(supervisor = active_login(request))
 
             if not editing:
                 success_msg = "Dodano pracę {}!".format(
@@ -74,7 +74,10 @@ class Thesis(View):
         """
 
         if thesis_id is not None:
-            return get_object_or_404(ThesisModel, pk = thesis_id)
+            return get_object_or_404(
+                ThesisModel,
+                pk = thesis_id,
+                supervisorLogin = active_login(request))
 
         return None
 
@@ -102,7 +105,9 @@ class ThesisDelete(View):
         if not ids:
             return HttpResponseBadRequest("'ids' must be provided!")
 
-        theses = ThesisModel.objects.filter(id__in = ids)
+        theses = ThesisModel.objects.filter(
+            id__in = ids,
+            supervisorLogin = active_login(request))
         for t in theses:
             t.delete()
 

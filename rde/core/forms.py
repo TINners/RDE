@@ -13,7 +13,7 @@ class ThesisForm(ModelForm):
 
     class Meta:
         model = Thesis
-        exclude = ['issueYear', 'issueMonth', 'issueDay']
+        exclude = ['issueYear', 'issueMonth', 'issueDay', 'supervisorLogin']
         widgets = {
             'kind': RadioSelect
         }
@@ -33,7 +33,7 @@ class ThesisForm(ModelForm):
 
         return super(ThesisForm, self).__init__(*args, **kwargs)
 
-    def save(self, commit = True):
+    def save(self, supervisor, commit = True):
         # Replace the given issueDate with a triple: issueYear, issueMonth and issueDay.
         # Set those values in the created record.
 
@@ -41,6 +41,8 @@ class ThesisForm(ModelForm):
 
         for (key, value) in self._split_date(issue_date):
             setattr(self.instance, key, value)
+
+        self.instance.supervisorLogin = supervisor
 
         return super(ThesisForm, self).save(commit)
 
