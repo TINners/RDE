@@ -9,6 +9,34 @@
 
         <link href="{% static 'common.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'login.css' %}" rel="stylesheet" type="text/css" />
+
+        <style type="text/css">
+            #password-box.enabled > .password-enable {
+                display: none;
+            }
+
+            #password-box.enabled > .password-input {
+                display: block;
+            }
+
+            #password-box > .password-enable {
+                display: block;
+            }
+
+            #password-box > .password-input {
+                display: none;
+            }
+        </style>
+
+        <script type="text/javascript" src="{% static 'jquery-1.11.3.min.js' %}"></script>
+
+        <script type="text/javascript">
+            $(function() {
+                $(".password-enable").on("click", function() {
+                    $("#password-box").addClass("enabled");
+                });
+            });
+        </script>
     </head>
 
     <body>
@@ -35,9 +63,17 @@
                 <input type="text" placeholder="@ii.pw.edu.pl" disabled size="13">
                 <br><br>
 
-                Hasło:
-                <input type="password" name="password" size="30">
-                <br><br>
+                <div id="password-box">
+                    <a href="#" class="password-enable">
+                        Wprowadź lub ustaw hasło
+                    </a>
+
+                    <div class="password-input">
+                        Hasło:
+                        <input type="password" name="password" size="30">
+                        <br><br>
+                    </div>
+                </div>
 
                 <input type="submit" value="Zaloguj">
             </form>
