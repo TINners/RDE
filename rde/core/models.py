@@ -114,7 +114,7 @@ class Thesis(models.Model):
         assert len(theses)
         assert all(t.kind == theses[0].kind for t in theses)
 
-        "\n".join(t.asXML() for t in theses)
+        return "\n".join(t.asXML() for t in theses)
 
     # A regular expression for validating keyword fields
     _keywords_regex = r"^[\w -]+(,( ?)\w[\w -]+)*$"

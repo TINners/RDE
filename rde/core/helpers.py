@@ -45,5 +45,5 @@ def parse_id_list(ids_string):
     """
 
     # Drop all empty ids that may occur in the given string.
-    return filter(None, ids_string.split(","))
+    return list(map(int, filter(None, ids_string.split(","))))
 

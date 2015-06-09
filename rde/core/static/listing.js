@@ -41,6 +41,14 @@ $(function() {
         $create.on("click", redirectToCreate);
     }
 
+    function bindExport() {
+        // Update activity when checkbox' state changes.
+        $theses.on("change", updateExportActivity);
+
+        // Post and export request to the server when clicked.
+        $getXML.on("click", postExport);
+    }
+
     function updateEditActivity() {
         // "Edit" is only active when there is exactly one checkbox selected.
         if (selectedTheses().length == 1) {
@@ -61,10 +69,36 @@ $(function() {
         }
     }
 
+    function updateExportActivity() {
+        // Export is only active if there is at least one selected thesis
+        // AND if all selected theses are of the same kind.
+        var theses = selectedTheses();
+
+        if (theses.length > 0 && sameKind(theses)) {
+            $getXML.prop("disabled", null);
+        }
+        else {
+            $getXML.prop("disabled", "disabled");
+        }
+    }
+
     function selectedTheses() {
         return $('.thesis :checkbox:checked').map(function() {
             return this.value
         }).get();
+    }
+
+    function sameKind(theses) {
+        if (!theses.length) {
+            return true
+        }
+
+        var first = theses[0];
+        var desiredKind = $('.thesis:has(:checkbox[value="' + first + '"])').data("kind");
+
+        return ($('.thesis:has(:checkbox:checked)')
+            .filter(function() { return $(this).data("kind") != desiredKind })
+            .length == 0);
     }
 
     function redirectToEdit() {
@@ -81,6 +115,10 @@ $(function() {
         }
     }
 
+    function postExport() {
+        post("/export/", {ids: selectedTheses().join()});
+    }
+
     function post(url, data) {
         var form = $formTemplate.clone();
         form.prop("action", url);
@@ -95,11 +133,13 @@ $(function() {
     // Set initial button enabled state:
     updateEditActivity();
     updateDeleteActivity();
+    updateExportActivity();
 
     // Bind event handlers:
     bindAllCheckbox();
     bindEdit();
     bindDelete();
     bindCreate();
+    bindExport();
 });
 

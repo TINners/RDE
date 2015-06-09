@@ -9,7 +9,7 @@ from ..models import Thesis
 from ..helpers import parse_id_list
 
 class Export(View):
-    def get(self, request):
+    def post(self, request):
         """
         Take a comma-separated list of thesis ids from the GET 'ids' parameter
         and generate an XML containing serialized data of the selected theses
@@ -22,5 +22,6 @@ class Export(View):
         ids = parse_id_list(request.POST.get("ids", ""))
 
         theses = Thesis.objects.filter(id__in = ids)
-        return HttpResponse(Thesis.generateXML(theses))
+        return HttpResponse(Thesis.generateXML(theses),
+            content_type = "text/plain")
 

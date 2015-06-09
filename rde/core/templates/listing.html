@@ -50,7 +50,7 @@
 				</tr>
 
                 {% for thesis in theses %}
-                    <tr class="thesis">
+                <tr class="thesis" data-kind="{{ thesis.kind }}">
                         <td>
                             <input type="checkbox" name="Praca" value="{{ thesis.id }}">
                         </td>
