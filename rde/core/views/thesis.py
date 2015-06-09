@@ -30,7 +30,7 @@ class Thesis(View):
         initial_info = self._template_info(request)
 
         form = ThesisForm(
-            instance = self._existing_thesis(thesis_id),
+            instance = self._existing_thesis(request, thesis_id),
             initial = initial_info)
         editing = thesis_id is not None
 
@@ -48,7 +48,7 @@ class Thesis(View):
         or render the edition form with errors.
         """
 
-        form = ThesisForm(request.POST, instance = self._existing_thesis(thesis_id))
+        form = ThesisForm(request.POST, instance = self._existing_thesis(request, thesis_id))
         editing = thesis_id is not None
 
         if form.is_valid():
@@ -75,7 +75,7 @@ class Thesis(View):
                 "editing": editing
             })
 
-    def _existing_thesis(self, thesis_id):
+    def _existing_thesis(self, request, thesis_id):
         """
         If thesis_id is not None, tries to return an existing Thesis object
         with this id - if it's not found, raises 404.
