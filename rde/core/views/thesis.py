@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.http import HttpResponseBadRequest, Http404
 
 from ..forms import ThesisForm
-from ..models import Thesis as ThesisModel
+from ..models import Thesis as ThesisModel, Supervisor
 from ..helpers import login_required, active_login, active_template, parse_id_list
 
 class Thesis(View):
@@ -27,7 +27,11 @@ class Thesis(View):
         If no 'thesis_id' is specified, render an empty form.
         """
 
-        form = ThesisForm(instance = self._existing_thesis(thesis_id))
+        initial_info = self._template_info(request)
+
+        form = ThesisForm(
+            instance = self._existing_thesis(thesis_id),
+            initial = initial_info)
         editing = thesis_id is not None
 
         return render(request, "thesis-form.html", {
@@ -49,6 +53,11 @@ class Thesis(View):
 
         if form.is_valid():
             form.save(supervisor = active_login(request))
+
+            self._update_template(
+                request,
+                form.cleaned_data['supervisorName'],
+                form.cleaned_data['supervisorSurname'])
 
             if not editing:
                 success_msg = "Dodano pracę {}!".format(
@@ -90,6 +99,40 @@ class Thesis(View):
             return reverse("thesis-create")
         else:
             return reverse("thesis-update", kwargs = {"thesis_id": thesis_id})
+
+    def _template_info(self, request):
+        """
+        Returns a dictionary of initial form values based on the active user's
+        template (if there is one).
+        """
+
+        template = active_template(request)
+
+        if template is not None:
+            return {
+                "supervisorName": template.name,
+                "supervisorSurname": template.surname
+            }
+        
+        return {}
+
+    def _update_template(self, request, new_name, new_surname):
+        """
+        If newly entered data differs from the current supervisor's template,
+        the template is altered. If it doesn't exist, it's created.
+        """
+
+        active = active_login(request)
+
+        if not active_template(request):
+            return Supervisor(
+                login = active,
+                surname = new_surname,
+                name = new_name
+            ).save()
+        
+        return Supervisor.objects.filter(login = active).update(
+            surname = new_surname, name = new_name)
 
 class ThesisDelete(View):
     @login_required

@@ -11,7 +11,7 @@ class Supervisor(models.Model):
     data specified here will be automatically input when adding a thesis.
     """
 
-    email = models.EmailField(unique = True, primary_key = True)
+    login = models.CharField(unique = True, primary_key = True, max_length = 30)
     surname = models.CharField(max_length = 30, null = True, default = None)
     name = models.CharField(max_length = 30, null = True, default = None)
 

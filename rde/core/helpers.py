@@ -34,8 +34,10 @@ def active_template(request):
     Returns a Supervisor object (if there's any) of the currently authorized user.
     """
 
-    if active_login():
-        return Supervisor.objects.filter(pk = active_login()).get(0)
+    active = active_login(request)
+
+    if active:
+        return Supervisor.objects.filter(login = active).first()
 
     return None
 
