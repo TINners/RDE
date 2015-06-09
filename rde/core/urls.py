@@ -9,6 +9,7 @@ from .views import (
     Logout,
     Listing,
     Thesis,
+    ThesisDelete,
     Export
 )
 
@@ -20,6 +21,7 @@ urlpatterns = [
 
     url(r'^$', Listing.as_view(), name = "listing"),
     url(r'^thesis/create/$', Thesis.as_view(), name = "thesis-create"),
-    url(r'^thesis/(?P<thesis_id>.+)/$', Thesis.as_view(), name = "thesis-update-delete"),
+    url(r'^thesis/delete/$', ThesisDelete.as_view(), name = "thesis-delete"),
+    url(r'^thesis/(?P<thesis_id>.+)/$', Thesis.as_view(), name = "thesis-update"),
 ]
 

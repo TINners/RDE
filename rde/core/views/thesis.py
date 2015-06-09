@@ -8,10 +8,11 @@ from django.forms.models import model_to_dict
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.http import HttpResponseBadRequest, Http404
 
 from ..forms import ThesisForm
 from ..models import Thesis as ThesisModel
-from ..helpers import login_required, active_login, active_template
+from ..helpers import login_required, active_login, active_template, parse_id_list
 
 class Thesis(View):
     """
@@ -51,7 +52,7 @@ class Thesis(View):
 
             if not editing:
                 success_msg = "Dodano pracę {}!".format(
-                    "inżynierską" if form.kind == "B" else "magisterską")
+                    "inżynierską" if form.cleaned_data['kind'] == "B" else "magisterską")
             else:
                 success_msg = "Zapisano zmiany!"
 
@@ -64,16 +65,6 @@ class Thesis(View):
                 "submit_to": self._submit_url(thesis_id),
                 "editing": editing
             })
-
-    @login_required
-    def delete(self, request, thesis_id):
-        """
-        On DELETE, delete the thesis record with the given thesis_id
-        or return 404.
-        """
-
-        messages.add_message(request, messages.SUCCESS, "Usunięto pracę!")
-        self._existing_thesis(thesis_id).delete()
 
     def _existing_thesis(self, thesis_id):
         """
@@ -95,5 +86,30 @@ class Thesis(View):
         if thesis_id is None:
             return reverse("thesis-create")
         else:
-            return reverse("thesis-update-delete", kwargs = {"thesis_id": thesis_id})
+            return reverse("thesis-update", kwargs = {"thesis_id": thesis_id})
+
+class ThesisDelete(View):
+    @login_required
+    def post(self, request):
+        """
+        On POST, delete the thesis records with the ids given as POST data.
+
+        If "ids" is missing from POST, raise 400.
+        """
+
+        ids = parse_id_list(request.POST.get("ids", ""))
+
+        if not ids:
+            return HttpResponseBadRequest("'ids' must be provided!")
+
+        theses = ThesisModel.objects.filter(id__in = ids)
+        for t in theses:
+            t.delete()
+
+        success_msg = ("Usunięto pracę!"
+            if len(theses) == 1
+            else "Usunieto {} prac!".format(len(theses)))
+
+        messages.add_message(request, messages.SUCCESS, success_msg)
+        return redirect("listing")
 

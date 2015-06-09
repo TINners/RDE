@@ -14,6 +14,12 @@
         <link href="{% static 'thesis-form.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'login.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'listing.css' %}" rel="stylesheet" type="text/css" />
+
+        {% block custom_stylesheets %}{% endblock %}
+
+        <script type="text/javascript" src="{% static 'jquery-1.11.3.min.js' %}"></script>
+
+        {% block custom_scripts %}{% endblock %}
     </head>
 
     <body>

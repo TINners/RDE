@@ -2,8 +2,18 @@
 
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
+{% block custom_scripts %}
+    <script type="text/javascript" src="{% static 'listing.js' %}"></script>
+{% endblock %}
+
 {% block content %}
     <div id="listing">
+        <form id="form-template" method="POST" style="display: none;">
+            {% csrf_token %}
+        </form>
+
         <div align="left">
             <font size="6">
                 Twoje Prace:
@@ -11,10 +21,10 @@
         </div>
 
 		<div align="right">
-            <button>Pobierz XML</button>
-            <button>Utwórz</button>
-            <button>Edytuj</button>
-            <button>Usuń</button>
+            <button id="get-xml-btn">Pobierz XML</button>
+            <button id="create-btn">Utwórz</button>
+            <button id="edit-btn">Edytuj</button>
+            <button id="delete-btn">Usuń</button>
 		</div>
 
 		</br>
@@ -40,7 +50,7 @@
 				</tr>
 
                 {% for thesis in theses %}
-                    <tr>
+                    <tr class="thesis">
                         <td>
                             <input type="checkbox" name="Praca" value="{{ thesis.id }}">
                         </td>

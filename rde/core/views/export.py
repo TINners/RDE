@@ -6,6 +6,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 
 from ..models import Thesis
+from ..helpers import parse_id_list
 
 class Export(View):
     def get(self, request):
@@ -18,12 +19,7 @@ class Export(View):
         and an empty XML is returned.
         """
 
-        ids_string = request.GET.get("ids", "")
-
-        # Drop all empty ids that may occur in the given string.
-        # As a result, we get a list of strings that may be used to query
-        # Thesis records.
-        ids = filter(None, ids_string.split(","))
+        ids = parse_id_list(request.POST.get("ids", ""))
 
         theses = Thesis.objects.filter(id__in = ids)
         return HttpResponse(Thesis.generateXML(theses))

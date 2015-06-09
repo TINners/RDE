@@ -39,3 +39,11 @@ def active_template(request):
 
     return None
 
+def parse_id_list(ids_string):
+    """
+    Splits the given comma-separated list of identifiers, returning an array.
+    """
+
+    # Drop all empty ids that may occur in the given string.
+    return filter(None, ids_string.split(","))
+
